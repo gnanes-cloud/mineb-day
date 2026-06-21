@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>A Special Secret Is Waiting Just for You💌...</title>
+<title> A Special Secret Is Waiting Just for You💌... </title>
 <style>
 /* ============================================================
    BASE.CSS — Design tokens, resets, typography, shared layout
@@ -435,7 +435,8 @@ body{
 
 .btn-sparkle {
   display: inline-block;
-  animation: sparkleSpin 2s linear infinite;
+  animation: wiggle 2.4s ease-in-out infinite;
+  animation-delay: 1.5s;
 }
 
 @keyframes sparkleSpin {
@@ -471,6 +472,7 @@ body{
 <body>
 <canvas id="particle-canvas"></canvas>
 <audio id="bg-music" loop preload="none">
+/*song*/
   <source src="assets/music/birthday-song.mp3" type="audio/mpeg" />
 </audio>
 
@@ -482,9 +484,9 @@ body{
 
     <p class="eyebrow">Just A Moment</p>
     <h1 class="countdown-heading">
-      <span class="gradient-text">Someone Has Something</span>
+      <span class="gradient-text"> A Special Secret Is </span>
       <br />
-      Special to Tell You<span class="dots">...</span>
+      Waiting Just for You<span class="dots">💌...</span>
     </h1>
 
     <!-- Animated countdown numbers -->
