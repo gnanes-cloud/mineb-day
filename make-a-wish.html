@@ -1076,32 +1076,32 @@ function initScrollReveal() {
    /*email*/
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-
+<script>
 emailjs.init("KmL6uEnj3Lj6GFQcf");
 
-const textarea = document.getElementById("wish-textarea");
-const sendBtn = document.getElementById("sendBtn");
-const confirmMsg = document.getElementById("wishConfirm");
-const charCount = document.getElementById("charCount");
+const emailTextarea  = document.getElementById("wish-textarea");
+const emailSendBtn  = document.getElementById("sendBtn");
+const emailConfirmMsg  = document.getElementById("wishConfirm");
+const emailcharCount = document.getElementById("charCount");
 
-textarea.addEventListener("input", () => {
-    charCount.textContent = textarea.value.length;
+emailTextarea.addEventListener("input", () => {
+    emailcharCount.textContent = emailTextarea.value.length;
 });
 
-sendBtn.addEventListener("click", function () {
+emailSendBtn.addEventListener("click", function () {
 
-    const message = textarea.value.trim();
+    const message = emailTextarea.value.trim();
 
     if (!message) {
-        textarea.classList.add("shake");
+        emailTextarea.classList.add("shake");
         setTimeout(() => {
-            textarea.classList.remove("shake");
+            emailTextarea.classList.remove("shake");
         }, 400);
         return;
     }
 
-    sendBtn.disabled = true;
-    sendBtn.textContent = "Sending...";
+    emailSendBtn.disabled = true;
+    emailSendBtn.textContent = "Sending...";
 
     emailjs.send(
         "service_hl6c40b",
@@ -1112,19 +1112,20 @@ sendBtn.addEventListener("click", function () {
         }
     )
     .then(() => {
-        confirmMsg.classList.add("show");
-        textarea.value = "";
-        charCount.textContent = "0";
-        sendBtn.textContent = "✨ Send Wish";
-        sendBtn.disabled = false;
+        emailConfirmMsg.classList.add("show");
+        emailTextarea.value = "";
+        emailcharCount.textContent = "0";
+        emailSendBtn.textContent = "✨ Send Wish";
+        emailSendBtn.disabled = false;
     })
     .catch((error) => {
         console.error(error);
         alert("Failed to send wish.");
-        sendBtn.textContent = "✨ Send Wish";
-        sendBtn.disabled = false;
+        emailSendBtn.textContent = "✨ Send Wish";
+        emailSendBtn.disabled = false;
     });
 
 });
+</script>
 </body>
 </html>
