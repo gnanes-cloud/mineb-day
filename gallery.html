@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Memory Gallery</title>
+<style>
+/* ============================================================
+   BASE.CSS — Design tokens, resets, typography, shared layout
+   Premium Birthday Wish Website
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap');
+
+:root {
+  /* ---- Color tokens ---- */
+  --midnight: #1a0b2e;
+  --midnight-deep: #120821;
+  --plum: #2d1450;
+  --purple: #9b5de5;
+  --purple-soft: #b794f6;
+  --pink: #ff5fa8;
+  --pink-soft: #ffb3d1;
+  --gold: #ffd166;
+  --gold-soft: #ffe8b3;
+  --blue: #4cc9f0;
+  --blue-soft: #a8e6ff;
+  --white: #fffaf5;
+  --white-dim: rgba(255, 250, 245, 0.7);
+
+  /* ---- Gradients ---- */
+  --grad-bg: radial-gradient(ellipse at 20% 20%, #2d1450 0%, #1a0b2e 45%, #120821 100%);
+  --grad-aurora: linear-gradient(135deg, var(--pink) 0%, var(--purple) 50%, var(--blue) 100%);
+  --grad-gold: linear-gradient(135deg, #ffe8b3 0%, #ffd166 50%, #f5a623 100%);
+  --grad-glass: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+
+  /* ---- Glass ---- */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-blur: 18px;
+
+  /* ---- Typography ---- */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-body: 'Poppins', -apple-system, sans-serif;
+
+  /* ---- Motion ---- */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  --t-fast: 0.3s;
+  --t-mid: 0.6s;
+  --t-slow: 1.2s;
+
+  /* ---- Spacing scale ---- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 6rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--grad-bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Shared page shell ---- */
+.page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  overflow: hidden;
+}
+
+/* Canvas layer for particles (hearts/stars/balloons) sits behind all content */
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- Headings ---- */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--gold-soft);
+  opacity: 0.85;
+}
+
+.gradient-text {
+  background: var(--grad-aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gold-text {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Glassmorphism card ---- */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ---- Premium button ---- */
+.btn-premium {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--midnight-deep);
+  background: var(--grad-gold);
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(255, 209, 102, 0.35), 0 2px 8px rgba(0,0,0,0.25);
+  transition: transform var(--t-fast) var(--ease-soft), box-shadow var(--t-fast) var(--ease-soft);
+}
+.btn-premium:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(255, 209, 102, 0.5), 0 4px 12px rgba(0,0,0,0.3);
+}
+.btn-premium:active { transform: translateY(-1px) scale(0.99); }
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+}
+.btn-premium:hover::before { transform: translateX(100%); }
+
+.btn-ghost {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--white);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-soft);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+/* ---- Page transition overlay ---- */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--grad-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+.page-transition-overlay.active {
+  pointer-events: all;
+  animation: fadeInOverlay var(--t-mid) var(--ease-soft) forwards;
+}
+.page-transition-overlay .loader-heart {
+  font-size: 2.5rem;
+  animation: pulseHeart 1s ease-in-out infinite;
+}
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulseHeart { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+body.page-enter { animation: pageEnter var(--t-slow) var(--ease-soft) backwards; }
+@keyframes pageEnter {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---- Nav dots (progress indicator across the journey) ---- */
+.journey-nav {
+  position: fixed;
+  bottom: var(--space-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 50;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(8px);
+}
+.journey-nav .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all var(--t-fast) var(--ease-soft);
+}
+.journey-nav .dot.active {
+  background: var(--gold);
+  width: 22px;
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* ---- Music toggle ---- */
+.music-toggle {
+  position: fixed;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 60;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform var(--t-fast) var(--ease-soft);
+}
+.music-toggle:hover { transform: scale(1.1); }
+.music-toggle.muted { opacity: 0.5; }
+.music-toggle .bar { display:inline-flex; gap:2px; align-items:flex-end; height:14px; }
+.music-toggle .bar span {
+  width: 3px; background: var(--gold); border-radius: 2px;
+  animation: musicBars 0.8s ease-in-out infinite;
+}
+.music-toggle.muted .bar span { animation-play-state: paused; height: 4px !important; }
+.music-toggle .bar span:nth-child(1) { animation-delay: 0s; }
+.music-toggle .bar span:nth-child(2) { animation-delay: 0.2s; }
+.music-toggle .bar span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes musicBars {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+
+/* ---- Back link ---- */
+.back-link {
+  position: fixed;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 60;
+  color: var(--white-dim);
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 50px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  transition: all var(--t-fast) var(--ease-soft);
+}
+.back-link:hover { color: var(--gold); transform: translateX(-2px); }
+
+/* ---- Scroll reveal helper ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s var(--ease-soft), transform 0.9s var(--ease-soft);
+}
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+/* ---- Utility ---- */
+.text-center { text-align: center; }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+
+::selection { background: var(--pink); color: var(--white); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--midnight-deep); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--pink); }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Responsive base ---- */
+@media (max-width: 768px) {
+  :root { --space-xl: 4rem; --space-lg: 2.5rem; }
+  .btn-premium, .btn-ghost { padding: 0.85rem 1.8rem; font-size: 0.9rem; }
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+}
+</style>
+
+<style>
+/* ============================================================
+   GALLERY.CSS — Page 4 specific styles
+   ============================================================ */
+
+.gallery-page { padding-top: var(--space-lg); padding-bottom: var(--space-xl); }
+.gallery-page .content-layer { max-width: 1100px; }
+
+.gallery-heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+
+.gallery-sub {
+  text-align: center;
+  color: var(--white-dim);
+  margin-bottom: var(--space-lg);
+  font-weight: 300;
+}
+
+/* ---- Grid ---- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  transition: transform var(--t-fast) var(--ease-soft), box-shadow var(--t-fast) var(--ease-soft);
+}
+
+.gallery-item img { position: relative; }
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-soft);
+  background: var(--grad-aurora);
+  color: transparent;
+}
+
+/* Graceful fallback if an image fails to load (e.g. placeholder not yet replaced) */
+.gallery-item img::before {
+  content: '🖼️ Replace with your photo';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  background: var(--grad-glass);
+}
+
+.item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(155,93,229,0.1) 0%, rgba(26,11,46,0.75) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-soft);
+}
+
+.zoom-icon { font-size: 1.8rem; transform: scale(0.7); transition: transform var(--t-fast) var(--ease-bounce); }
+
+.gallery-item:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 34px rgba(155, 93, 229, 0.35);
+}
+.gallery-item:hover img { transform: scale(1.12); }
+.gallery-item:hover .item-overlay { opacity: 1; }
+.gallery-item:hover .zoom-icon { transform: scale(1); }
+
+/* ---- Lightbox ---- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(18, 8, 33, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-mid) var(--ease-soft);
+  padding: var(--space-md);
+}
+
+.lightbox.active { opacity: 1; pointer-events: all; }
+
+.lightbox img {
+  max-width: min(90vw, 800px);
+  max-height: 70vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: scale(0.9);
+  transition: transform var(--t-mid) var(--ease-bounce);
+}
+.lightbox.active img { transform: scale(1); }
+
+.lightbox-caption {
+  color: var(--white-dim);
+  font-size: 0.95rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--white);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-soft);
+}
+.lightbox-close:hover { transform: rotate(90deg); background: var(--pink); }
+
+/* ---- Carousel ---- */
+.carousel-title {
+  text-align: center;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+  font-size: 1.6rem;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.4);
+}
+
+.carousel-track { position: relative; width: 100%; height: 100%; }
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.9s var(--ease-soft), transform 1.2s var(--ease-soft);
+}
+.carousel-slide.active { opacity: 1; transform: scale(1); z-index: 1; }
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-fast) var(--ease-soft);
+}
+.carousel-arrow:hover { background: var(--pink); }
+.carousel-arrow.prev { left: 1rem; }
+.carousel-arrow.next { right: 1rem; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  border: none;
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-soft);
+}
+.carousel-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
+
+.continue-btn {
+  display: flex;
+  margin: var(--space-xl) auto 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<audio id="bg-music" loop preload="none">
+  <source src="assets/music/birthday-song.mp3" type="audio/mpeg" />
+</audio>
+
+<a href="wish.html" class="back-link">← Back</a>
+<button class="music-toggle"><span class="bar"><span></span><span></span><span></span></span></button>
+
+<main class="page gallery-page">
+  <div class="content-layer">
+
+    <p class="eyebrow">Cherished Moments</p>
+    <h1 class="gallery-heading"><span class="gradient-text">Memory</span> <span class="gold-text">Gallery</span></h1>
+    <p class="gallery-sub">A collection of beautiful moments worth remembering</p>
+
+    <!-- ============================================================
+         PHOTO GALLERY
+         REPLACE each image src below with your own photos.
+         Update the data-caption attribute with a short description.
+         Add or remove .gallery-item blocks as needed.
+         ============================================================ -->
+    <div class="gallery-grid">
+      <div class="gallery-item" data-caption="A beautiful memory together">
+        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80" alt="Memory photo 1" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+      <div class="gallery-item" data-caption="Celebrating the good times">
+        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=80" alt="Memory photo 2" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+      <div class="gallery-item" data-caption="Laughter and joy">
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80" alt="Memory photo 3" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+      <div class="gallery-item" data-caption="Unforgettable adventures">
+        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&q=80" alt="Memory photo 4" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+      <div class="gallery-item" data-caption="Sweet memories">
+        <img src="https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?w=600&q=80" alt="Memory photo 5" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+      <div class="gallery-item" data-caption="Always smiling together">
+        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Memory photo 6" loading="lazy" />
+        <div class="item-overlay"><span class="zoom-icon">🔍</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDESHOW CAROUSEL
+         REPLACE these images with your own selection for the slideshow
+         ============================================================ -->
+    <h2 class="carousel-title">Slideshow</h2>
+    <div class="carousel" id="carousel">
+      <div class="carousel-track" id="carousel-track">
+        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=80" alt="Slide 1" class="carousel-slide active" />
+        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=900&q=80" alt="Slide 2" class="carousel-slide" />
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&q=80" alt="Slide 3" class="carousel-slide" />
+        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=900&q=80" alt="Slide 4" class="carousel-slide" />
+      </div>
+      <button class="carousel-arrow prev" id="prev-arrow" aria-label="Previous slide">‹</button>
+      <button class="carousel-arrow next" id="next-arrow" aria-label="Next slide">›</button>
+      <div class="carousel-dots" id="carousel-dots"></div>
+    </div>
+
+    <button class="btn-premium continue-btn" data-nav="memories.html">
+      <span>See Special Memories</span> <span>→</span>
+    </button>
+  </div>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+  <img src="" alt="" id="lightbox-img" />
+  <p class="lightbox-caption" id="lightbox-caption"></p>
+</div>
+
+<div class="journey-nav"></div>
+<script>
+/* ============================================================
+   PARTICLES.JS — Shared ambient canvas background
+   Renders floating hearts, twinkling stars, and drifting balloons.
+   Used on every page via #particle-canvas for visual consistency.
+   Usage: initParticles({ hearts: true, stars: true, balloons: true })
+   ============================================================ */
+
+(function (global) {
+  'use strict';
+
+  const COLORS = {
+    pink: '#ff5fa8',
+    purple: '#9b5de5',
+    gold: '#ffd166',
+    blue: '#4cc9f0',
+    white: '#fffaf5'
+  };
+
+  function initParticles(opts) {
+    const options = Object.assign(
+      { hearts: true, stars: true, balloons: true, density: 1 },
+      opts || {}
+    );
+
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return null;
+    const ctx = canvas.getContext('2d');
+    let w, h, dpr;
+    let particles = [];
+    let rafId;
+    let running = true;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.width = window.innerWidth * dpr;
+      h = canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function drawStar(x, y, size, opacity) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.translate(x, y);
+      ctx.fillStyle = COLORS.gold;
+      ctx.shadowColor = COLORS.gold;
+      ctx.shadowBlur = size * 2;
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
+        const ox = Math.cos(angle) * size;
+        const oy = Math.sin(angle) * size;
+        ctx.lineTo(ox, oy);
+        const innerAngle = angle + Math.PI / 5;
+        ctx.lineTo(Math.cos(innerAngle) * size * 0.4, Math.sin(innerAngle) * size * 0.4);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawHeart(x, y, size, opacity, color) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.translate(x, y);
+      ctx.scale(size / 20, size / 20);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(0, 6);
+      ctx.bezierCurveTo(-10, -6, -22, 4, 0, 18);
+      ctx.bezierCurveTo(22, 4, 10, -6, 0, 6);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawBalloon(x, y, size, opacity, color) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.translate(x, y);
+      const grad = ctx.createRadialGradient(-size * 0.3, -size * 0.3, size * 0.1, 0, 0, size);
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.25, color);
+      grad.addColorStop(1, color);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, size * 0.75, size, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // knot
+      ctx.beginPath();
+      ctx.moveTo(-4, size * 0.95);
+      ctx.lineTo(4, size * 0.95);
+      ctx.lineTo(0, size * 1.1);
+      ctx.fill();
+      // string
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, size * 1.1);
+      ctx.quadraticCurveTo(6, size * 1.4, 0, size * 1.7);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function makeParticle(type, initial) {
+      const base = { type };
+      if (type === 'star') {
+        base.x = rand(0, window.innerWidth);
+        base.y = rand(0, window.innerHeight);
+        base.size = rand(1, 3);
+        base.baseOpacity = rand(0.3, 0.9);
+        base.twinkleSpeed = rand(0.02, 0.06);
+        base.twinklePhase = rand(0, Math.PI * 2);
+      } else if (type === 'heart') {
+        base.x = rand(0, window.innerWidth);
+        base.y = initial ? rand(0, window.innerHeight) : window.innerHeight + 30;
+        base.size = rand(10, 22);
+        base.speed = rand(0.3, 0.9);
+        base.drift = rand(-0.4, 0.4);
+        base.opacity = rand(0.25, 0.6);
+        base.color = pick([COLORS.pink, COLORS.purple, COLORS.gold]);
+        base.angle = rand(0, Math.PI * 2);
+      } else if (type === 'balloon') {
+        base.x = rand(0, window.innerWidth);
+        base.y = initial ? rand(0, window.innerHeight) : window.innerHeight + 80;
+        base.size = rand(18, 34);
+        base.speed = rand(0.2, 0.5);
+        base.drift = rand(-0.3, 0.3);
+        base.opacity = rand(0.5, 0.85);
+        base.color = pick([COLORS.pink, COLORS.purple, COLORS.blue, COLORS.gold]);
+        base.sway = rand(0, Math.PI * 2);
+      }
+      return base;
+    }
+
+    function buildParticles() {
+      particles = [];
+      const d = options.density;
+      if (options.stars) {
+        const count = Math.floor(80 * d);
+        for (let i = 0; i < count; i++) particles.push(makeParticle('star', true));
+      }
+      if (options.hearts) {
+        const count = Math.floor(14 * d);
+        for (let i = 0; i < count; i++) particles.push(makeParticle('heart', true));
+      }
+      if (options.balloons) {
+        const count = Math.floor(6 * d);
+        for (let i = 0; i < count; i++) particles.push(makeParticle('balloon', true));
+      }
+    }
+
+    function step() {
+      if (!running) return;
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      for (let p of particles) {
+        if (p.type === 'star') {
+          p.twinklePhase += p.twinkleSpeed;
+          const op = p.baseOpacity * (0.5 + 0.5 * Math.sin(p.twinklePhase));
+          drawStar(p.x, p.y, p.size, op);
+        } else if (p.type === 'heart') {
+          p.y -= p.speed;
+          p.x += Math.sin(p.angle) * 0.3 + p.drift * 0.2;
+          p.angle += 0.01;
+          drawHeart(p.x, p.y, p.size, p.opacity, p.color);
+          if (p.y < -30) Object.assign(p, makeParticle('heart', false));
+        } else if (p.type === 'balloon') {
+          p.y -= p.speed;
+          p.sway += 0.015;
+          p.x += Math.sin(p.sway) * 0.5;
+          drawBalloon(p.x, p.y, p.size, p.opacity, p.color);
+          if (p.y < -100) Object.assign(p, makeParticle('balloon', false));
+        }
+      }
+      rafId = requestAnimationFrame(step);
+    }
+
+    resize();
+    buildParticles();
+    step();
+
+    window.addEventListener('resize', () => {
+      resize();
+    });
+
+    return {
+      pause() { running = false; cancelAnimationFrame(rafId); },
+      resume() { if (!running) { running = true; step(); } },
+      destroy() {
+        running = false;
+        cancelAnimationFrame(rafId);
+        window.removeEventListener('resize', resize);
+      }
+    };
+  }
+
+  global.initParticles = initParticles;
+  global.PARTICLE_COLORS = COLORS;
+})(window);
+
+function showMessage(){
+    alert("Happy Birthday!");
+}
+</script>
+<script> 
+/* ============================================================
+   MAIN.JS — Shared utilities used across every page
+   - Page transition navigation
+   - Background music control (persists choice via sessionStorage)
+   - Confetti burst
+   - Fireworks
+   - Scroll-reveal observer
+   - Journey nav dots
+   ============================================================ */
+
+/* ---------------- CONFIG ---------------- */
+/* PAGE ORDER — edit here if you reorder/rename files */
+const JOURNEY = [
+  'index.html',
+  'countdown.html',
+  'wish.html',
+  'gallery.html',
+  'memories.html',
+  'gift.html',
+  'make-a-wish.html',
+  'finale.html'
+];
+
+/* ---------------- PAGE TRANSITIONS ---------------- */
+function goToPage(url) {
+  const overlay = document.createElement('div');
+  overlay.className = 'page-transition-overlay active';
+  overlay.innerHTML = '<div class="loader-heart">💗</div>';
+  document.body.appendChild(overlay);
+  setTimeout(() => { window.location.href = url; }, 550);
+}
+
+/* Attach to any element with [data-nav="next"] or [data-nav="filename.html"] */
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('page-enter');
+
+  document.querySelectorAll('[data-nav]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = el.getAttribute('data-nav');
+      if (target === 'next') {
+        const current = JOURNEY.findIndex((p) => window.location.pathname.endsWith(p));
+        const nextPage = JOURNEY[(current + 1) % JOURNEY.length] || JOURNEY[0];
+        goToPage(nextPage);
+      } else {
+        goToPage(target);
+      }
+    });
+  });
+
+  buildJourneyNav();
+  initMusicToggle();
+  initScrollReveal();
+});
+
+/* ---------------- JOURNEY NAV DOTS ---------------- */
+function buildJourneyNav() {
+  const mount = document.querySelector('.journey-nav');
+  if (!mount) return;
+  const currentIndex = JOURNEY.findIndex((p) => window.location.pathname.endsWith(p));
+  mount.innerHTML = '';
+  JOURNEY.forEach((page, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === currentIndex ? ' active' : '');
+    mount.appendChild(dot);
+  });
+}
+
+/* ---------------- BACKGROUND MUSIC ---------------- */
+/* REPLACE: set the src on the <audio id="bg-music"> tag in each HTML file
+   to your chosen birthday song file, e.g. assets/music/birthday-song.mp3 */
+function initMusicToggle() {
+  const audio = document.getElementById('bg-music');
+  const toggle = document.querySelector('.music-toggle');
+  if (!audio) return;
+
+  const wantsMusic = sessionStorage.getItem('bday-music') !== 'off';
+  if (wantsMusic) {
+    audio.volume = 0.45;
+    audio.play().catch(() => {
+      /* Autoplay blocked until user interacts — handled by start button on page 1 */
+    });
+  } else {
+    audio.pause();
+  }
+  updateToggleUI();
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+        sessionStorage.setItem('bday-music', 'on');
+      } else {
+        audio.pause();
+        sessionStorage.setItem('bday-music', 'off');
+      }
+      updateToggleUI();
+    });
+  }
+
+  function updateToggleUI() {
+    if (!toggle) return;
+    toggle.classList.toggle('muted', audio.paused);
+  }
+}
+
+/* Call this from a user-gesture (button click) to reliably start audio,
+   e.g. the "Begin the Journey" button on page 1 */
+function startBackgroundMusic() {
+  const audio = document.getElementById('bg-music');
+  if (!audio) return;
+  audio.volume = 0.45;
+  audio.play().catch(() => {});
+  sessionStorage.setItem('bday-music', 'on');
+}
+
+/* ---------------- CONFETTI ---------------- */
+/* Lightweight canvas confetti burst. Call confettiBurst() or confettiBurst({duration, count}) */
+function confettiBurst(opts) {
+  const options = Object.assign({ duration: 3000, count: 140 }, opts || {});
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.inset = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.zIndex = '500';
+  canvas.style.pointerEvents = 'none';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const colors = ['#ff5fa8', '#9b5de5', '#ffd166', '#4cc9f0', '#fffaf5'];
+  const pieces = [];
+  for (let i = 0; i < options.count; i++) {
+    pieces.push({
+      x: Math.random() * window.innerWidth,
+      y: -20 - Math.random() * window.innerHeight * 0.3,
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 12 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 2 + 2,
+      drift: Math.random() * 2 - 1,
+      rotation: Math.random() * 360,
+      rotSpeed: Math.random() * 8 - 4,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle'
+    });
+  }
+
+  const start = performance.now();
+  function frame(now) {
+    const elapsed = now - start;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    pieces.forEach((p) => {
+      p.y += p.speed;
+      p.x += p.drift;
+      p.rotation += p.rotSpeed;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      if (p.shape === 'rect') {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+    if (elapsed < options.duration) {
+      requestAnimationFrame(frame);
+    } else {
+      canvas.remove();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------------- FIREWORKS ---------------- */
+function fireworksDisplay(durationMs) {
+  const duration = durationMs || 4000;
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.inset = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.zIndex = '499';
+  canvas.style.pointerEvents = 'none';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function resize() {
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+
+  const colors = ['#ff5fa8', '#9b5de5', '#ffd166', '#4cc9f0', '#fffaf5'];
+  let particles = [];
+
+  function launchFirework() {
+    const x = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
+    const y = Math.random() * window.innerHeight * 0.4 + window.innerHeight * 0.1;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const count = 36;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const speed = Math.random() * 3 + 2;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        decay: Math.random() * 0.012 + 0.012,
+        color,
+        size: Math.random() * 2 + 1.5
+      });
+    }
+  }
+
+  const start = performance.now();
+  let lastLaunch = 0;
+  function frame(now) {
+    const elapsed = now - start;
+    // Fully clear each frame (canvas background is transparent), then redraw
+    // particles. This avoids a dark fill compounding over time and blacking
+    // out the page underneath.
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    if (now - lastLaunch > 500 && elapsed < duration - 600) {
+      launchFirework();
+      lastLaunch = now;
+    }
+
+    particles = particles.filter((p) => p.life > 0);
+    particles.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.025;
+      p.life -= p.decay;
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    if (elapsed < duration) {
+      requestAnimationFrame(frame);
+    } else {
+      canvas.remove();
+    }
+  }
+  requestAnimationFrame(frame);
+  window.addEventListener('resize', resize);
+}
+
+/* ---------------- SCROLL REVEAL ---------------- */
+function initScrollReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  items.forEach((item) => observer.observe(item));
+}
+</script>
+
+<script>
+  initParticles({ hearts: true, stars: false, balloons: false, density: 0.5 });
+
+  /* ---- Lightbox ---- */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  document.querySelectorAll('.gallery-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = item.dataset.caption || '';
+      lightbox.classList.add('active');
+    });
+  });
+
+  function closeLightbox() { lightbox.classList.remove('active'); }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  /* ---- Carousel ---- */
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dotsWrap = document.getElementById('carousel-dots');
+  let current = 0;
+  let autoTimer;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsWrap.appendChild(dot);
+  });
+
+  function goToSlide(index) {
+    slides[current].classList.remove('active');
+    dotsWrap.children[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dotsWrap.children[current].classList.add('active');
+  }
+
+  document.getElementById('next-arrow').addEventListener('click', () => { goToSlide(current + 1); resetAuto(); });
+  document.getElementById('prev-arrow').addEventListener('click', () => { goToSlide(current - 1); resetAuto(); });
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goToSlide(current + 1), 4000);
+  }
+  resetAuto();
+</script>
+</body>
+</html>
