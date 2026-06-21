@@ -1073,5 +1073,58 @@ function initScrollReveal() {
 
   continueBtn.addEventListener('click', () => goToPage('finale.html'));
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init("YOUR_PUBLIC_KEY");
+
+const textarea = document.getElementById("wish-textarea");
+const sendBtn = document.getElementById("sendBtn");
+const confirmMsg = document.getElementById("wishConfirm");
+const charCount = document.getElementById("charCount");
+
+textarea.addEventListener("input", () => {
+    charCount.textContent = textarea.value.length;
+});
+
+sendBtn.addEventListener("click", function () {
+
+    const message = textarea.value.trim();
+
+    if (!message) {
+        textarea.classList.add("shake");
+        setTimeout(() => {
+            textarea.classList.remove("shake");
+        }, 400);
+        return;
+    }
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Sending...";
+
+    emailjs.send(
+        "YOUR_SERVICE_ID",
+        "YOUR_TEMPLATE_ID",
+        {
+            message: message,
+            date: new Date().toLocaleString()
+        }
+    )
+    .then(() => {
+        confirmMsg.classList.add("show");
+        textarea.value = "";
+        charCount.textContent = "0";
+        sendBtn.textContent = "✨ Send Wish";
+        sendBtn.disabled = false;
+    })
+    .catch((error) => {
+        console.error(error);
+        alert("Failed to send wish.");
+        sendBtn.textContent = "✨ Send Wish";
+        sendBtn.disabled = false;
+    });
+
+});
+</script>
 </body>
 </html>
