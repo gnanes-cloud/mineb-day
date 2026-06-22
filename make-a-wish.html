@@ -448,7 +448,7 @@ body{
 <canvas id="lantern-canvas"></canvas>
 
 <audio id="bg-music" loop preload="none">
-  <source src="assets/music/birthday-song.mp3" type="audio/mpeg" />
+  <source src="birthday-song.mp3" type="audio/mpeg" />
 </audio>
 
 <a href="gift.html" class="back-link">← Back</a>
@@ -460,16 +460,14 @@ body{
     <p class="eyebrow">Your Turn</p>
     <h1 class="wish-input-heading"><span class="gradient-text">Make</span> <span class="gold-text">a Wish</span></h1>
     <p class="wish-input-sub">Type your wish below and watch it float into the sky</p>
-
-    <div class="wish-form glass-card">
-      <textarea id="wish-textarea" maxlength="180" placeholder="I wish for..." rows="3"></textarea>
-      <div class="char-count"><span id="char-count">0</span/180></div>
-       <div id="wishConfirm" class="wish-confirm"></div>
-      <button id="send-wish-btn" class="btn-premium  send-wish-btn">
-        <span>Send My Wish</span> <span>🏮</span>
-      </button>
+     
+     <div class="char-count">
+    <span id="charCount">0</span>/180</div>
+    <div id="wishConfirm" class="wish-confirm"></div>
+    <button id="sendBtn" class="btn-premium send-wish-btn">
+    <span>Send My Wish</span> <span>🏮</span>
+    </button>
     </div>
-
     <p class="wish-confirm" id="wish-confirm"></p>
 
     <button id="continue-btn" class="btn-premium continue-btn" style="display:none;">
