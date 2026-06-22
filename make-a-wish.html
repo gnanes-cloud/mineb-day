@@ -463,8 +463,9 @@ body{
 
     <div class="wish-form glass-card">
       <textarea id="wish-textarea" maxlength="180" placeholder="I wish for..." rows="3"></textarea>
-      <div class="char-count"><span id="char-count">0</span>/180</div>
-      <button id="send-wish-btn" class="btn-premium send-wish-btn">
+      <div class="char-count"><span id="char-count">0</span></div>
+       <div id="wishConfirm" class="wish-confirm"></div>
+      <button id="send-wish-btn" class=" send-wish-btn">
         <span>Send My Wish</span> <span>🏮</span>
       </button>
     </div>
@@ -1088,6 +1089,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!emailTextarea || !emailSendBtn) {
         console.error("HTML elements not found.");
+        console.log("Textarea:", emailTextarea);
+        console.log("Button:", emailSendBtn);
+        console.log("Confirm:", emailConfirmMsg);
+        console.log("CharCount:", emailCharCount);
         return;
     }
 
