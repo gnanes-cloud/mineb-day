@@ -399,7 +399,7 @@ body{
   75% { transform: translateX(8px); }
 }
 
-.char-count {
+.charCount {
   align-self: flex-end;
   font-size: 0.75rem;
   color: var(--white-dim);
@@ -414,14 +414,14 @@ body{
 }
 .send-wish-btn:disabled { opacity: 0.6; cursor: default; transform: none !important; }
 
-.wish-confirm {
+.wishConfirm {
   margin-top: var(--space-md);
   color: var(--gold-soft);
   font-size: 0.95rem;
   opacity: 0;
   transition: opacity 0.8s var(--ease-soft);
 }
-.wish-confirm.show { opacity: 1; }
+.wishConfirm.show { opacity: 1; }
 
 .continue-btn {
   margin-top: var(--space-lg);
@@ -451,14 +451,14 @@ document.addEventListener("DOMContentLoaded", function () {
     emailjs.init("KmL6uEnj3Lj6GFQcf");
 
     const emailTextarea = document.getElementById("wish-textarea");
-    const emailSendBtn = document.getElementById("sendBtn");
+    const emailSendBtn = document.getElementById("send-wish-btn");
     const emailConfirmMsg = document.getElementById("wishConfirm");
     const emailCharCount = document.getElementById("charCount");
 
     if (!emailTextarea || !emailSendBtn) {
         console.error("HTML elements not found.");
         console.log("Textarea:", emailTextarea);
-        console.log("Button:", emailSendBtn);
+        console.log("Button:", emailsend-wish-btn);
         console.log("Confirm:", emailConfirmMsg);
         console.log("CharCount:", emailCharCount);
         return;
@@ -544,7 +544,7 @@ document.addEventListener("DOMContentLoaded", function () {
        <textarea id="wish-textarea" maxlength="180" placeholder="I wish for..." rows="3"></textarea>
        <div class="char-count"><span id="charCount">0</span>/180</div>
        <div id="wishConfirm" class="wish-confirm"></div>
-      <button id="sendBtn" class="btn-premium send-wish-btn">
+      <button id="send-wish-btn" class="btn-premium send-wish-btn">
          <span>Send My Wish</span> <span>🏮</span>
     </button>
    </div>
