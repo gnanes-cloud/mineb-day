@@ -443,6 +443,85 @@ body{
 </style>
 </head>
 <body>
+   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    emailjs.init("KmL6uEnj3Lj6GFQcf");
+
+    const emailTextarea = document.getElementById("wish-textarea");
+    const emailSendBtn = document.getElementById("sendBtn");
+    const emailConfirmMsg = document.getElementById("wishConfirm");
+    const emailCharCount = document.getElementById("charCount");
+
+    if (!emailTextarea || !emailSendBtn) {
+        console.error("HTML elements not found.");
+        console.log("Textarea:", emailTextarea);
+        console.log("Button:", emailSendBtn);
+        console.log("Confirm:", emailConfirmMsg);
+        console.log("CharCount:", emailCharCount);
+        return;
+    }
+
+    if (emailCharCount) {
+        emailTextarea.addEventListener("input", () => {
+            emailCharCount.textContent = emailTextarea.value.length;
+        });
+    }
+
+    emailSendBtn.addEventListener("click", function () {
+
+        const message = emailTextarea.value.trim();
+
+        if (!message) {
+            emailTextarea.classList.add("shake");
+
+            setTimeout(() => {
+                emailTextarea.classList.remove("shake");
+            }, 400);
+
+            return;
+        }
+
+        emailSendBtn.disabled = true;
+        emailSendBtn.textContent = "Sending...";
+
+        emailjs.send(
+            "service_hl6c40b",
+            "template_01871yg",
+            {
+                message: message,
+                date: new Date().toLocaleString()
+            }
+        )
+        .then(() => {
+            if (emailConfirmMsg) {
+                emailConfirmMsg.classList.add("show");
+            }
+
+            emailTextarea.value = "";
+
+            if (emailCharCount) {
+                emailCharCount.textContent = "0";
+            }
+
+            emailSendBtn.textContent = "✨ Send Wish";
+            emailSendBtn.disabled = false;
+        })
+        .catch((error) => {
+            console.error("EmailJS Error:", error);
+            alert("Failed to send wish.");
+
+            emailSendBtn.textContent = "✨ Send Wish";
+            emailSendBtn.disabled = false;
+        });
+
+    });
+
+});
+</script>
+</script>
 
 <canvas id="particle-canvas"></canvas>
 <canvas id="lantern-canvas"></canvas>
@@ -1072,86 +1151,6 @@ function initScrollReveal() {
   });
 
   continueBtn.addEventListener('click', () => goToPage('finale.html'));
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    emailjs.init("KmL6uEnj3Lj6GFQcf");
-
-    const emailTextarea = document.getElementById("wish-textarea");
-    const emailSendBtn = document.getElementById("sendBtn");
-    const emailConfirmMsg = document.getElementById("wishConfirm");
-    const emailCharCount = document.getElementById("charCount");
-
-    if (!emailTextarea || !emailSendBtn) {
-        console.error("HTML elements not found.");
-        console.log("Textarea:", emailTextarea);
-        console.log("Button:", emailSendBtn);
-        console.log("Confirm:", emailConfirmMsg);
-        console.log("CharCount:", emailCharCount);
-        return;
-    }
-
-    if (emailCharCount) {
-        emailTextarea.addEventListener("input", () => {
-            emailCharCount.textContent = emailTextarea.value.length;
-        });
-    }
-
-    emailSendBtn.addEventListener("click", function () {
-
-        const message = emailTextarea.value.trim();
-
-        if (!message) {
-            emailTextarea.classList.add("shake");
-
-            setTimeout(() => {
-                emailTextarea.classList.remove("shake");
-            }, 400);
-
-            return;
-        }
-
-        emailSendBtn.disabled = true;
-        emailSendBtn.textContent = "Sending...";
-
-        emailjs.send(
-            "service_hl6c40b",
-            "template_01871yg",
-            {
-                message: message,
-                date: new Date().toLocaleString()
-            }
-        )
-        .then(() => {
-            if (emailConfirmMsg) {
-                emailConfirmMsg.classList.add("show");
-            }
-
-            emailTextarea.value = "";
-
-            if (emailCharCount) {
-                emailCharCount.textContent = "0";
-            }
-
-            emailSendBtn.textContent = "✨ Send Wish";
-            emailSendBtn.disabled = false;
-        })
-        .catch((error) => {
-            console.error("EmailJS Error:", error);
-            alert("Failed to send wish.");
-
-            emailSendBtn.textContent = "✨ Send Wish";
-            emailSendBtn.disabled = false;
-        });
-
-    });
-
-});
-</script>
 </script>
 </body>
 </html>
