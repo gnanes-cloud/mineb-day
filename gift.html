@@ -510,7 +510,7 @@ body{
   width: 100%;
   border-radius: 16px;
   max-height: 320px;
-  object-fit: cover;
+  object-fit: contain;
   position: relative;
   background: var(--grad-aurora);
   min-height: 180px;
@@ -597,7 +597,9 @@ body{
         coming your way!
       </p>
       <!-- REPLACE with your own image -->
-      <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&q=80" alt="Surprise photo" class="reveal-img" />
+      <video autoplay muted loop playsinline class="reveal-video" width="100%">
+    <source src="vd.mp4" type="video/mp4">
+     </video>
       <!-- OR replace the image above with a video, e.g.:
       <video controls class="reveal-video">
         <source src="assets/video/surprise-video.mp4" type="video/mp4">
